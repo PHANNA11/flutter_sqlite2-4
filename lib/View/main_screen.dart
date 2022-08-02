@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   hintText: 'Enter name', border: OutlineInputBorder()),
             ),
           ),
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 future: listUser,
                 builder: (context, AsyncSnapshot<List<User>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -94,8 +94,24 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             var item = snapshot.data![index];
-                            return ListTile(
-                              title: Text(item.name),
+                            return InkWell(
+                              onLongPress: () async {
+                                await DatabaseConnection()
+                                    .deleteuser(item.id)
+                                    .whenComplete(() {
+                                  setState(() {
+                                    print('Delete success');
+                                  });
+                                });
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text(item.id.toString()),
+                                  ),
+                                  title: Text(item.name),
+                                ),
+                              ),
                             );
                           },
                         );

@@ -28,7 +28,17 @@ class DatabaseConnection {
   Future<List<User>> getUser() async {
     final db = await initializeUserDB();
     List<Map<String, dynamic>> qresult = await db.query(table);
-    print('lll');
+    //print('lll');
     return qresult.map((e) => User.fromMap(e)).toList();
+  }
+
+  Future<void> deleteuser(int id) async {
+    final db = await initializeUserDB();
+    await db.delete(table, where: 'id=?', whereArgs: [id]);
+  }
+
+  Future<void> updateUser(User user) async {
+    final db = await initializeUserDB();
+    await db.update(table, user.toMap(), where: 'id=?', whereArgs: [user.id]);
   }
 }
