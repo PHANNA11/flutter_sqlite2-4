@@ -31,4 +31,6 @@ class DatabaseConnection {
     print('lll');
     return qresult.map((e) => User.fromMap(e)).toList();
   }
+
+  void sortUser() async {}
 }
