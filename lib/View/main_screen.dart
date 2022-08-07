@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sqlite1/Model/user_model.dart';
+import 'package:sqlite1/View/update.dart';
 import 'package:sqlite1/connection/database_connection.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,9 +18,9 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController controller = TextEditingController();
   late DatabaseConnection db;
   Future<List<User>>? listUser;
-  Future<List<User>> getList() async {
-    return await db.getUser();
-  }
+  // Future<List<User>> getList() async {
+  //   return await db.getUser();
+  // }
 
   @override
   void initState() {
@@ -95,6 +96,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemBuilder: (context, index) {
                             var item = snapshot.data![index];
                             return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UpdateScreen(user: item),
+                                    ));
+                              },
                               onLongPress: () async {
                                 await DatabaseConnection()
                                     .deleteuser(item.id)
